@@ -22,3 +22,17 @@ h1.title {
 .pctopts {
   border-right: solid 2px gray;
 }
+
+body {
+  counter-reset: h2counter;
+}
+
+h1:before {
+  content: counter(h2counter) ".\0000a0\0000a0";
+  counter-increment: h2counter;
+  counter-reset: h3counter;
+}
+h2:before {
+  content: counter(h2counter) "." counter(h3counter) ".\0000a0\0000a0";
+  counter-increment: h3counter;
+}

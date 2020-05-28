@@ -29,7 +29,8 @@ class PCTOptions extends React.Component {
         iidqa: false,
         otp: false,
         orderscore: false,
-        trueid: false
+        trueid: false,
+        consulting: false
       }
     };
   }
@@ -53,11 +54,18 @@ class PCTOptions extends React.Component {
     console.log("handle change!", event.target);
     var value = event.target.value;
     var isBehavioralEnabled = this.state.products.behavioral && value == "full";
+    var isConsultingChecked = this.state.products.consulting || value == "full";
     console.log("isbehavioralenabled = ", isBehavioralEnabled);
-    this.setState(state => ({
-      tier: event.target.value,
-      products: { behavioral: isBehavioralEnabled }
-    }));
+    var newState = Object.assign({}, this.state);
+    newState.tier = value;
+    newState.products.behavioral = isBehavioralEnabled;
+    newState.products.consulting = isConsultingChecked;
+
+    this.setState(state => newState);
+    // this.setState(state => ({
+    //   tier: event.target.value,
+    //   products: { behavioral: isBehavioralEnabled }
+    // }));
   }
 
   render() {
@@ -82,6 +90,20 @@ class PCTOptions extends React.Component {
               <MenuItem value="basic">Orchestration Hub Only (Basic)</MenuItem>
               <MenuItem value="full">TMX Full offering</MenuItem>
             </Select>
+          </FormControl>
+          <FormControl>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.state.products.consulting}
+                  onChange={this.handleCheckbox}
+                  name="consulting"
+                  color="primary"
+                  disabled={this.state.tier == "full"}
+                />
+              }
+              label="Consulting Services"
+            />
           </FormControl>
           <FormControl>
             <FormControlLabel
